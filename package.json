@@ -12,7 +12,9 @@
     "react-dom": "^19.2.0",
     "react": "^19.2.0",
     "@google/genai": "^1.30.0",
-    "pdfjs-dist": "4.0.379"
+    "pdfjs-dist": "4.0.379",
+    "vite": "^7.2.6",
+    "@vitejs/plugin-react": "^5.1.1"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
