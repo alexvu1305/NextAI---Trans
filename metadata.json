@@ -1,0 +1,5 @@
+{
+  "name": "NextTranslate AI",
+  "description": "Intelligent document translation platform using Gemini 3.0 Multimodal capabilities to preserve layout and structure.",
+  "requestFramePermissions": []
+}

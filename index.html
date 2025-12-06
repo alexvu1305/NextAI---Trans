@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NextTranslate AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvPFpkZhqRXyCABFB" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyJY9NW4jJy+D/+kamF6n/EHDuWk/WO295Fjl52E9JwhWL6kS9P678HzgIzI75" crossorigin="anonymous"></script>
+    <style>
+      body { font-family: 'Inter', sans-serif; }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar { width: 8px; height: 8px; }
+      ::-webkit-scrollbar-track { background: #f1f1f1; }
+      ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+      /* Scanning Animation */
+      @keyframes scan-line {
+        0% { top: 0%; opacity: 0; }
+        5% { opacity: 1; }
+        95% { opacity: 1; }
+        100% { top: 100%; opacity: 0; }
+      }
+      .animate-scan {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(to right, transparent, rgba(59, 130, 246, 0.8), transparent);
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        animation: scan-line 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        z-index: 20;
+        pointer-events: none;
+      }
+      .scan-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(59, 130, 246, 0.05), transparent 20%);
+        animation: scan-line 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        z-index: 19;
+        pointer-events: none;
+        border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "pdfjs-dist": "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/+esm",
+    "pdfjs-dist/": "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
