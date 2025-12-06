@@ -9,7 +9,10 @@ const LAYOUT_MODEL = 'gemini-2.5-flash';
 const TRANSLATION_MODEL = 'gemini-2.5-flash';
 
 // Configure PDF.js worker for client-side rasterization
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs';
+// CRITICAL FIX: Only configure worker in browser environment to prevent Vercel Build/SSR errors
+if (typeof window !== 'undefined' && pdfjsLib.GlobalWorkerOptions) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs';
+}
 
 /**
  * Helper function to safely parse JSON from LLM output.
@@ -62,6 +65,11 @@ export const getDocumentDetails = async (base64DataUrl: string): Promise<{ type:
  * Page numbers are 1-based.
  */
 export const rasterizePdfPage = async (pdfBase64: string, pageNumber: number): Promise<string> => {
+    // Safety check for SSR
+    if (typeof document === 'undefined') {
+        throw new Error("Cannot rasterize PDF on server side");
+    }
+
     try {
         const loadingTask = pdfjsLib.getDocument(pdfBase64);
         const pdf = await loadingTask.promise;
@@ -91,6 +99,10 @@ export const rasterizePdfPage = async (pdfBase64: string, pageNumber: number): P
 
 const getImageDimensions = (base64Image: string): Promise<{ width: number; height: number }> => {
   return new Promise((resolve, reject) => {
+    if (typeof Image === 'undefined') {
+        resolve({ width: 1000, height: 1414 }); // Fallback for SSR
+        return;
+    }
     const img = new Image();
     img.onload = () => resolve({ width: img.width, height: img.height });
     img.onerror = reject;
@@ -219,7 +231,7 @@ export const analyzePageLayout = async (base64Image: string): Promise<DocumentBl
       [QUY TẮC NHẬN DIỆN CÔNG THỨC TOÁN (MATH)]
       1. Nếu thấy biểu thức toán học, ĐẶT type = "math_formula".
       2. Trong 'source.text', ghi lại biểu thức ở dạng dễ đọc.
-      3. Trong 'math.latex', chuyển biểu thức sang LaTeX đúng chuẩn nếu có thể.
+      3. Trong 'math.latex', chuyển biểu thức sang LaTeX đúng chuẩn (ví dụ: \\sum_{i=1}^{n}).
 
       [QUY TẮC THỨ TỰ ĐỌC]
       - 'reading_order' là số nguyên bắt đầu từ 0, đi từ trên xuống dưới, trái sang phải.
