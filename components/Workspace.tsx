@@ -372,6 +372,13 @@ const Workspace: React.FC<WorkspaceProps> = ({ dlm, activePageIndex, onPageChang
     }
   };
 
+  // Auto-trigger translation when layout analysis completes
+  useEffect(() => {
+    if (status === PageStatus.ANALYZED && currentPage.blocks.length > 0) {
+      handleTranslatePage();
+    }
+  }, [status, activePageIndex]);
+
   const handleExport = (format: 'html' | 'docx') => {
     if (!dlm) return;
     const content = generateDocumentContent(dlm.pages, 'Translated Document');
